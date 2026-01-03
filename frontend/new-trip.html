@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan a New Trip - Globe Trotter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Text:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sunset-orange: #FF6B35;
+            --warm-coral: #F7931E;
+            --deep-teal: #004E64;
+            --sage-green: #25A18E;
+            --cream: #FFF8F0;
+            --soft-sand: #F4E8D8;
+            --charcoal: #2C3E50;
+            --light-gray: #ECF0F1;
+            --shadow-color: rgba(0, 78, 100, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--soft-sand) 50%, #FFE9D6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--light-gray);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(37, 161, 142, 0.03) 100%);
+        }
+
+        .logo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--deep-teal);
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(255, 107, 53, 0.1);
+        }
+
+        .profile-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sunset-orange), var(--warm-coral));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .profile-circle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Plan Trip Form Section */
+        .plan-section {
+            background: var(--cream);
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .plan-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--deep-teal);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            align-items: center;
+            gap: 20px;
+        }
+
+        label {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            padding: 14px 18px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            color: var(--charcoal);
+            background: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 4px rgba(37, 161, 142, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Suggestions Section */
+        .suggestions-section {
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .suggestions-header {
+            background: var(--cream);
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .suggestions-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--charcoal);
+        }
+
+        .suggestions-grid {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            background: white;
+        }
+
+        .suggestion-card {
+            aspect-ratio: 3/4;
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #F8F9FA 0%, var(--light-gray) 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .suggestion-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(37, 161, 142, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .suggestion-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px var(--shadow-color);
+            border-color: var(--sage-green);
+        }
+
+        .suggestion-card:hover::before {
+            opacity: 1;
+        }
+
+        .suggestion-image {
+            height: 60%;
+            background: linear-gradient(135deg, var(--deep-teal) 0%, var(--sage-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+        }
+
+        .suggestion-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .suggestion-name {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-teal);
+            margin-bottom: 5px;
+        }
+
+        .suggestion-type {
+            font-size: 13px;
+            color: var(--charcoal);
+            opacity: 0.7;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--charcoal);
+        }
+
+        .btn-secondary:hover {
+            background: #D5DBDD;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--sunset-orange), var(--warm-coral));
+            color: white;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(255, 107, 53, 0.4);
+        }
+
+        @media (max-width: 968px) {
+            .suggestions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px 20px;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo-title {
+                font-size: 24px;
+            }
+
+            .plan-section {
+                padding: 20px;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .suggestions-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Loading state for suggestions */
+        .suggestion-card.loading {
+            pointer-events: none;
+        }
+
+        .suggestion-card.loading .suggestion-image {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-title">GlobeTrotter</div>
+            <div class="profile-circle" onclick="window.location.href='landing.html'">
+                👤
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Plan Trip Form -->
+            <div class="plan-section">
+                <div class="plan-title">Plan a new trip</div>
+                
+                <div class="form-group">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" />
+                </div>
+
+                <div class="form-group">
+                    <label for="selectPlace">Select a Place :</label>
+                    <input type="text" id="selectPlace" placeholder="Enter destination..." />
+                </div>
+
+                <div class="form-group">
+                    <label for="startDateAlt">Start Date:</label>
+                    <input type="date" id="startDateAlt" />
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" />
+                </div>
+            </div>
+
+            <!-- Suggestions Section -->
+            <div class="suggestions-section">
+                <div class="suggestions-header">
+                    <div class="suggestions-title">Suggestion for Places to Visit/Activites to preform</div>
+                </div>
+                
+                <div class="suggestions-grid">
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'Eiffel Tower')">
+                        <div class="suggestion-image">🗼</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">Eiffel Tower</div>
+                            <div class="suggestion-type">Landmark</div>
+                        </div>
+                    </div>
+
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'Louvre Museum')">
+                        <div class="suggestion-image">🎨</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">Louvre Museum</div>
+                            <div class="suggestion-type">Museum</div>
+                        </div>
+                    </div>
+
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'Seine River Cruise')">
+                        <div class="suggestion-image">🚢</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">Seine River Cruise</div>
+                            <div class="suggestion-type">Activity</div>
+                        </div>
+                    </div>
+
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'Versailles Palace')">
+                        <div class="suggestion-image">👑</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">Versailles Palace</div>
+                            <div class="suggestion-type">Historical Site</div>
+                        </div>
+                    </div>
+
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'Montmartre Walk')">
+                        <div class="suggestion-image">🎭</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">Montmartre Walk</div>
+                            <div class="suggestion-type">Walking Tour</div>
+                        </div>
+                    </div>
+
+                    <div class="suggestion-card" onclick="selectSuggestion(this, 'French Cooking Class')">
+                        <div class="suggestion-image">👨‍🍳</div>
+                        <div class="suggestion-content">
+                            <div class="suggestion-name">French Cooking Class</div>
+                            <div class="suggestion-type">Experience</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="cancelPlan()">
+                    <span>Cancel</span>
+                </button>
+                <button class="btn btn-primary" onclick="generateItinerary()">
+                    <span>Generate Itinerary</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Selected suggestions tracker
+        let selectedSuggestions = [];
+
+        // Date synchronization
+        const startDate1 = document.getElementById('startDate');
+        const startDate2 = document.getElementById('startDateAlt');
+
+        startDate1.addEventListener('change', function() {
+            startDate2.value = this.value;
+        });
+
+        startDate2.addEventListener('change', function() {
+            startDate1.value = this.value;
+        });
+
+        function selectSuggestion(card, name) {
+            card.classList.toggle('selected');
+            
+            if (card.classList.contains('selected')) {
+                card.style.borderColor = 'var(--sage-green)';
+                card.style.backgroundColor = 'rgba(37, 161, 142, 0.1)';
+                selectedSuggestions.push(name);
+            } else {
+                card.style.borderColor = '';
+                card.style.backgroundColor = '';
+                selectedSuggestions = selectedSuggestions.filter(s => s !== name);
+            }
+
+            console.log('Selected suggestions:', selectedSuggestions);
+        }
+
+        function generateItinerary() {
+            const startDate = document.getElementById('startDate').value;
+            const place = document.getElementById('selectPlace').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (!startDate || !place || !endDate) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            const tripData = {
+                startDate,
+                place,
+                endDate,
+                selectedActivities: selectedSuggestions
+            };
+
+            console.log('Trip Data:', tripData);
+
+            // Show loading state
+            document.querySelectorAll('.suggestion-card').forEach(card => {
+                card.classList.add('loading');
+            });
+
+            // Simulate generating itinerary
+            setTimeout(() => {
+                alert(`Generating itinerary for ${place}!\nDuration: ${startDate} to ${endDate}\nSelected activities: ${selectedSuggestions.length}`);
+                
+                // Navigate to detailed planning page
+                window.location.href = 'plan-trip.html';
+            }, 1500);
+        }
+
+        function cancelPlan() {
+            if (confirm('Are you sure you want to cancel? All unsaved changes will be lost.')) {
+                window.location.href = 'landing.html';
+            }
+        }
+
+        // Place input suggestions (optional enhancement)
+        const placeInput = document.getElementById('selectPlace');
+        placeInput.addEventListener('input', function() {
+            console.log('Searching for:', this.value);
+            // Here you could implement autocomplete functionality
+        });
+
+        // Validate end date is after start date
+        document.getElementById('endDate').addEventListener('change', function() {
+            const start = new Date(document.getElementById('startDate').value);
+            const end = new Date(this.value);
+
+            if (end < start) {
+                alert('End date must be after start date!');
+                this.value = '';
+            }
+        });
+    </script>
+</body>
+</html>
