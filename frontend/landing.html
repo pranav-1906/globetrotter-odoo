@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globe Trotter - Travel Itinerary Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Text:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sunset-orange: #FF6B35;
+            --warm-coral: #F7931E;
+            --deep-teal: #004E64;
+            --sage-green: #25A18E;
+            --cream: #FFF8F0;
+            --soft-sand: #F4E8D8;
+            --charcoal: #2C3E50;
+            --light-gray: #ECF0F1;
+            --shadow-color: rgba(0, 78, 100, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--soft-sand) 50%, #FFE9D6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--light-gray);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(37, 161, 142, 0.03) 100%);
+        }
+
+        .logo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--deep-teal);
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(255, 107, 53, 0.1);
+        }
+
+        .profile-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sunset-orange), var(--warm-coral));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .profile-circle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Banner */
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* dark overlay */
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        /* text content */
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .banner-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.1rem;
+        }
+
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* Search and Filters */
+        .search-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 14px 18px 14px 45px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--sage-green);
+            box-shadow: 0 0 0 4px rgba(37, 161, 142, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--charcoal);
+            opacity: 0.5;
+            font-size: 18px;
+        }
+
+        .filter-btn {
+            padding: 14px 24px;
+            border: 2px solid var(--light-gray);
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--charcoal);
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--sage-green);
+            background: rgba(37, 161, 142, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--deep-teal);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sunset-orange), var(--warm-coral));
+        }
+
+        /* Top Regional Selections */
+        .regional-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .region-card {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--light-gray) 0%, #E8EEF0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .region-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(37, 161, 142, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .region-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px var(--shadow-color);
+            border-color: var(--sage-green);
+        }
+
+        .region-card:hover::before {
+            opacity: 1;
+        }
+
+        .region-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .region-name {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--charcoal);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Previous Trips */
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .trip-card {
+            cursor: pointer;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .trip-image {
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .trip-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .trip-details {
+            padding: 12px;
+        }
+
+
+        .trip-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--deep-teal);
+            margin-bottom: 8px;
+        }
+
+        .trip-date {
+            font-size: 13px;
+            color: var(--charcoal);
+            opacity: 0.7;
+        }
+
+        /* Plan Trip Button */
+        .plan-trip-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, var(--sunset-orange), var(--warm-coral));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .plan-trip-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255, 107, 53, 0.5);
+        }
+
+        .plan-trip-btn::before {
+            content: '+';
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo-title {
+                font-size: 24px;
+            }
+
+            .banner {
+                height: 220px;
+            }
+
+            .banner-text {
+                font-size: 32px;
+            }
+
+            .banner-icon {
+                font-size: 60px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .search-section {
+                flex-direction: column;
+            }
+
+            .regional-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 15px;
+            }
+
+            .trips-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 20px;
+            }
+
+            .plan-trip-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 16px 28px;
+                font-size: 14px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .loading {
+            background: linear-gradient(90deg, var(--light-gray) 0px, #E8EEF0 40px, var(--light-gray) 80px);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-title">GlobeTrotter</div>
+            <div class="profile-circle" onclick="window.location.href='login.html'">
+                👤
+            </div>
+        </div>
+
+        <!-- Banner -->
+        <div class="banner">
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+                <h1>Discover Your Next Adventure</h1>
+                <p>Travel • Explore • Experience</p>
+            </div>
+        </div>
+
+
+
+        
+        <!-- Content -->
+        <div class="content">
+            <!-- Search and Filters -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search destinations, trips, or experiences...">
+                </div>
+                <button class="filter-btn" onclick="toggleFilter('group')">Group by</button>
+                <button class="filter-btn" onclick="toggleFilter('filter')">Filter</button>
+                <button class="filter-btn" onclick="toggleFilter('sort')">Sort by...</button>
+            </div>
+
+            <!-- Top Regional Selections -->
+            <div class="section-header">Top Regional Selections</div>
+            <div class="regional-grid">
+                <div class="region-card" onclick="selectRegion('Asia')">
+                    <div class="region-icon">🏯</div>
+                    <div class="region-name">Asia</div>
+                </div>
+                <div class="region-card" onclick="selectRegion('Europe')">
+                    <div class="region-icon">🗼</div>
+                    <div class="region-name">Europe</div>
+                </div>
+                <div class="region-card" onclick="selectRegion('Africa')">
+                    <div class="region-icon">🦁</div>
+                    <div class="region-name">Africa</div>
+                </div>
+                <div class="region-card" onclick="selectRegion('America')">
+                    <div class="region-icon">🗽</div>
+                    <div class="region-name">America</div>
+                </div>
+                <div class="region-card" onclick="selectRegion('Hawai')">
+                    <div class="region-icon">🏖️</div>
+                    <div class="region-name">Hawai</div>
+                </div>
+            </div>
+
+            <!-- Previous Trips -->
+            <div class="section-header">Previous Trips</div>
+
+            <div class="trips-grid">
+                <div class="trip-card" onclick="viewTrip('paris')">
+                    <div class="trip-image">
+                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34" alt="Paris">
+                    </div>
+                    <div class="trip-details">
+                        <div class="trip-title">Paris Getaway</div>
+                        <div class="trip-date">March 15–22, 2024</div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="viewTrip('tokyo')">
+                    <div class="trip-image">
+                        <img src="https://images.unsplash.com/photo-1553292770-c3d14b814242" alt="Tokyo">
+                    </div>
+                    <div class="trip-details">
+                        <div class="trip-title">Tokyo Adventure</div>
+                        <div class="trip-date">January 8–18, 2024</div>
+                    </div>
+                </div>
+
+                <div class="trip-card" onclick="viewTrip('bali')">
+                    <div class="trip-image">
+                        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Bali">
+                    </div>
+                    <div class="trip-details">
+                        <div class="trip-title">Bali Retreat</div>
+                        <div class="trip-date">November 5–15, 2023</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Plan Trip Button -->
+    <button class="plan-trip-btn" onclick="planNewTrip()">
+        Plan a trip
+    </button>
+
+    <script>
+        function toggleFilter(type) {
+            console.log('Toggle filter:', type);
+            alert(`${type.charAt(0).toUpperCase() + type.slice(1)} options coming soon!`);
+        }
+
+        function selectRegion(region) {
+            console.log('Selected region:', region);
+            alert(`Exploring ${region}! 🌍`);
+        }
+
+        function viewTrip(tripId) {
+            console.log('View trip:', tripId);
+            alert(`Loading trip details for ${tripId}...`);
+        }
+
+        function planNewTrip() {
+            console.log('Plan new trip');
+            alert('Let\'s plan your next adventure! ✈️');
+        }
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        searchInput.addEventListener('input', function(e) {
+            console.log('Search query:', e.target.value);
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('.region-card, .trip-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
