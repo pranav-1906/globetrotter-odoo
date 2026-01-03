@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Globe Trotter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Crimson+Text:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sunset-orange: #FF6B35;
+            --warm-coral: #F7931E;
+            --deep-teal: #004E64;
+            --sage-green: #25A18E;
+            --cream: #FFF8F0;
+            --soft-sand: #F4E8D8;
+            --charcoal: #2C3E50;
+            --light-gray: #ECF0F1;
+            --shadow-color: rgba(0, 78, 100, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--soft-sand) 50%, #FFE9D6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            overflow: hidden;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--light-gray);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(37, 161, 142, 0.03) 100%);
+        }
+
+        .logo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--deep-teal);
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(255, 107, 53, 0.1);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        /* User Profile Section */
+        .profile-section {
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+            background: var(--cream);
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .profile-image-container {
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--sage-green);
+            background: linear-gradient(135deg, var(--light-gray) 0%, #E8EEF0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: var(--sunset-orange);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-placeholder {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            color: var(--charcoal);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background: var(--sunset-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            cursor: pointer;
+        }
+
+        .camera-overlay::before {
+            content: '📷';
+            font-size: 18px;
+        }
+
+        .user-details {
+            flex: 1;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid var(--light-gray);
+            position: relative;
+        }
+
+        .user-details-header {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--charcoal);
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--charcoal);
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: var(--charcoal);
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, var(--sunset-orange), var(--warm-coral));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Trip Sections */
+        .trips-section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--deep-teal);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-gray);
+            position: relative;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--sunset-orange), var(--warm-coral));
+        }
+
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .trip-card {
+            aspect-ratio: 3/4;
+            border: 2px solid var(--light-gray);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #F8F9FA 0%, var(--light-gray) 100%);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .trip-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(37, 161, 142, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px var(--shadow-color);
+            border-color: var(--sage-green);
+        }
+
+        .trip-card:hover::before {
+            opacity: 1;
+        }
+
+        .trip-image {
+            height: 60%;
+            background: linear-gradient(135deg, var(--deep-teal) 0%, var(--sage-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+        }
+
+        .trip-info {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+
+        .trip-title {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-teal);
+            margin-bottom: 5px;
+        }
+
+        .trip-date {
+            font-size: 13px;
+            color: var(--charcoal);
+            opacity: 0.7;
+            margin-bottom: 10px;
+        }
+
+        .view-btn {
+            width: 100%;
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--charcoal);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            border-color: var(--sage-green);
+            background: rgba(37, 161, 142, 0.05);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px 20px;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo-title {
+                font-size: 24px;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+
+            .trips-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .trips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation for cards */
+        .trip-card {
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .trip-card:nth-child(1) { animation-delay: 0.1s; }
+        .trip-card:nth-child(2) { animation-delay: 0.2s; }
+        .trip-card:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-title">GlobeTrotter</div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- User Profile Section -->
+            <div class="profile-section">
+                <div class="profile-image-container">
+                    <div class="profile-image" onclick="document.getElementById('profilePhoto').click()">
+                        <span class="profile-placeholder" id="photoPlaceholder">Image of<br>the User</span>
+                        <img id="profilePhotoPreview" style="display: none;">
+                        <div class="camera-overlay"></div>
+                        <input type="file" id="profilePhoto" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="user-details">
+                    <button class="edit-btn" onclick="editProfile()">Edit</button>
+                    <div class="user-details-header"></div>
+                    
+                    <div class="user-info">
+                        <div class="info-item">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value" id="userName">John Durairaj</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="userEmail">jdfrvr@email.com</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value" id="userPhone">+91 9876543210</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Location</div>
+                            <div class="info-value" id="userLocation">Coimbatore, India</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Member Since</div>
+                            <div class="info-value">January 2025</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Total Trips</div>
+                            <div class="info-value">12 Trips</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preplanned Trips -->
+            <div class="trips-section">
+                <div class="section-header">Preplanned Trips</div>
+                <div class="trips-grid">
+                    <div class="trip-card">
+                        <div class="trip-image">🗼</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Paris Adventure</div>
+                                <div class="trip-date">Mar 15 - Mar 22, 2026</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('preplanned-1')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="trip-card">
+                        <div class="trip-image">🏝️</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Maldives Escape</div>
+                                <div class="trip-date">Apr 10 - Apr 18, 2026</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('preplanned-2')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="trip-card">
+                        <div class="trip-image">🏔️</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Swiss Alps Trek</div>
+                                <div class="trip-date">May 5 - May 15, 2026</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('preplanned-3')">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous Trips -->
+            <div class="trips-section">
+                <div class="section-header">Previous Trips</div>
+                <div class="trips-grid">
+                    <div class="trip-card">
+                        <div class="trip-image">🏯</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Tokyo Discovery</div>
+                                <div class="trip-date">Nov 5 - Nov 15, 2025</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('previous-1')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="trip-card">
+                        <div class="trip-image">🏖️</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Bali Retreat</div>
+                                <div class="trip-date">Sep 10 - Sep 20, 2025</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('previous-2')">View</button>
+                        </div>
+                    </div>
+
+                    <div class="trip-card">
+                        <div class="trip-image">🦁</div>
+                        <div class="trip-info">
+                            <div>
+                                <div class="trip-title">Safari Adventure</div>
+                                <div class="trip-date">Jul 15 - Jul 25, 2025</div>
+                            </div>
+                            <button class="view-btn" onclick="viewTrip('previous-3')">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Photo upload handling
+        document.getElementById('profilePhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('profilePhotoPreview').src = event.target.result;
+                    document.getElementById('profilePhotoPreview').style.display = 'block';
+                    document.getElementById('photoPlaceholder').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function editProfile() {
+            // Create a simple inline edit mode
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const userPhone = document.getElementById('userPhone');
+            const userLocation = document.getElementById('userLocation');
+
+            const fields = [
+                { element: userName, label: 'Full Name' },
+                { element: userEmail, label: 'Email' },
+                { element: userPhone, label: 'Phone' },
+                { element: userLocation, label: 'Location' }
+            ];
+
+            const editBtn = event.target;
+            
+            if (editBtn.textContent === 'Edit') {
+                // Switch to edit mode
+                fields.forEach(field => {
+                    const currentValue = field.element.textContent;
+                    field.element.innerHTML = `<input type="text" value="${currentValue}" style="width: 100%; padding: 5px; border: 2px solid var(--light-gray); border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 15px;">`;
+                });
+                editBtn.textContent = 'Save';
+                editBtn.style.background = 'linear-gradient(135deg, var(--sage-green), var(--deep-teal))';
+            } else {
+                // Save changes
+                fields.forEach(field => {
+                    const input = field.element.querySelector('input');
+                    field.element.textContent = input.value;
+                });
+                editBtn.textContent = 'Edit';
+                editBtn.style.background = 'linear-gradient(135deg, var(--sunset-orange), var(--warm-coral))';
+                
+                // Show success message
+                alert('Profile updated successfully! ✅');
+            }
+        }
+
+        function viewTrip(tripId) {
+            console.log('Viewing trip:', tripId);
+            window.location.href = 'plan-trip.html';
+        }
+
+        // Add click effect to trip cards
+        document.querySelectorAll('.trip-card').forEach(card => {
+            card.addEventListener('mousedown', function() {
+                this.style.transform = 'scale(0.98) translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseup', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
